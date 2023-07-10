@@ -1,0 +1,22 @@
+
+.bg-color1 {
+    background-color:rgb(175, 171, 224);
+    width:100%;
+    height: 90%;
+} 
+.bg-color2 {
+    background-color:  rgb(182, 211, 237);
+    text-align: center;
+    width: 100%;
+    height: 20%;
+    font-family:Didot;
+    padding: 0cm;
+}
+h1 {
+    font-size:50pt;
+}
+
+p {
+    font-size:20pt;
+    font-family:'Courier New';
+}

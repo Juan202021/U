@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1673739578 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\8actc++\cap5\fig5.10.cpp
+	<iostream>
+	"LibroCalificaciones5.9.h"
+
+1673739084 c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\8actc++\cap5\librocalificaciones5.9.h
+	<string>
+
+1673739328 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\8actc++\cap5\fig5.11.cpp
+	"LibroCalificaciones5.9.h"
+
+1673739918 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\8actc++\cap5\fig5.13.cpp
+	<iostream>
+

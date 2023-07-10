@@ -1,0 +1,40 @@
+# depslib dependency file v1.0
+1675633626 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\9actc++\cap6\fig6.4.cpp
+	<iostream>
+	"LibroCalificacionesFig6.3.h"
+
+1675632063 c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\9actc++\cap6\librocalificacionesfig6.3.h
+	<string>
+
+1675633907 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\9actc++\cap6\fig6.5.cpp
+	"LibroCalificacionesFig6.3.h"
+
+1675634295 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\9actc++\cap6\fig6.8.cpp
+	<iostream>
+	<iomanip>
+	<cstdlib>
+
+1675634606 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\9actc++\cap6\fig6.9.cpp
+	<iostream>
+	<iomanip>
+	<cstdlib>
+
+1675634781 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\9actc++\cap6\fig6.10.cpp
+	<iostream>
+	<iomanip>
+	<cstdlib>
+
+1675635143 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\9actc++\cap6\fig6.11.cpp
+	<iostream>
+	<cstdlib>
+	<ctime>
+
+1675635438 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\9actc++\cap6\fig6.12.cpp
+	<iostream>
+	<iomanip>
+	<random>
+	<ctime>
+
+1675638386 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\9actc++\cap6\fig6.14.cpp
+	<iostream>
+

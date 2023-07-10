@@ -1,0 +1,14 @@
+body {
+    background-color: aquamarine;
+}
+
+.color-bg1 {
+    background-color: brown;
+    padding: 50px;
+    color: aliceblue;
+}
+
+.color-bg2{
+    background-color:bisque;
+    color:blueviolet
+}

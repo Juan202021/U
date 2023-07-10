@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1675650890 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\sudoku\main.cpp
+	<iostream>
+	<stdlib.h>
+	<ctime>
+	<windows.h>
+	"cuerpoSudoku.h"
+
+1675650932 c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\sudoku\cuerposudoku.h
+

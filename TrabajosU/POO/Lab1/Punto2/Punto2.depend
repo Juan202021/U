@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1679978875 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\poo\punto2\main.cpp
+	<iostream>
+	<string>
+	<algorithm>
+

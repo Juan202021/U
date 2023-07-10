@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1679535424 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\poo\punto4\main.cpp
+	<iostream>
+	<cmath>
+	<iomanip>
+
+1679540428 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\poo\punto4\main2.cpp
+	<iostream>
+	<string>
+

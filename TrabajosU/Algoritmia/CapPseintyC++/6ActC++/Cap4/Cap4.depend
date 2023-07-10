@@ -1,0 +1,28 @@
+# depslib dependency file v1.0
+1673652971 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\6actc++\cap4\fig4.9.cpp
+	<iostream>
+	"LibroCalificacionesfig4.8.h"
+
+1673651539 c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\6actc++\cap4\librocalificacionesfig4.8.h
+	<string>
+
+1673652992 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\6actc++\cap4\fig4.10.cpp
+	"LibroCalificacionesfig4.8.h"
+
+1673660941 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\6actc++\cap4\fig4.13.cpp
+	<iostream>
+	<iomanip>
+	"LibroCalificacionesfig4.12.h"
+
+1673661027 c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\6actc++\cap4\librocalificacionesfig4.12.h
+	<string>
+
+1673661549 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\6actc++\cap4\fig4.14.cpp
+	"LibroCalificacionesfig4.12.h"
+
+1673662147 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\6actc++\cap4\fig4.16.cpp
+	<iostream>
+
+1673662471 source:c:\users\juan\jaristizabal\projectsgithub\u\trabajosu\algoritmia\cappseintyc++\6actc++\cap4\fig4.19.cpp
+	<iostream>
+
