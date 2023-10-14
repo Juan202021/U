@@ -29,12 +29,5 @@ public:
     T& get(int pos) const;
     void print() const;
     void printReverse() const;
-    List& operator=(const List<int> &l);
-    bool operator==(List<int> &l);
-    List<int> operator+(List<int> &l);
-    List<int>& operator++();
-    List<int> operator*(List<int> &l);
-    void crear_ngrande();
-    void archivo(vector<List<int>>& listas);
 };
 #endif //LAB3_LIST_H

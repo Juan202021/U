@@ -11,7 +11,7 @@ Punto<T>::Punto():x(0.0),y(0.0){}
 template <typename T>
 Punto<T>::Punto(T x, T y):x(x),y(y){}
 template<typename T>
-Punto<T>::~Punto(){};
+Punto<T>::~Punto(){}
 template <typename T>
 T Punto<T>::getX(){return x;}
 template <typename T>

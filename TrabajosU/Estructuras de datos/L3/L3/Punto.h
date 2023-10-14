@@ -21,7 +21,7 @@ public:
     friend ostream& operator<<(ostream& out, const Punto<T> &p){
         out << "Punto(x: " << p.x << ", y: " << p.y << ")";
         return out;
-    };
+    }
 };
 
 #endif //LAB3_PUNTO_H
