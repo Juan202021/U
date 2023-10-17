@@ -18,6 +18,7 @@ public:
     void print();
     bool posValida(int fila, int columna);
     bool noPosAnterior(int fila, int columna);
+    void buscarAlternativas(const Punto& currentSpot, int& cont);
     void iniciar(const Punto& salida);
 };
 

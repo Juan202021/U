@@ -17,6 +17,7 @@ public:
     void setFil(int fil);
     int getCol() const;
     void setCol(int col);
+    bool operator==(const Punto& p) const;
     friend ostream& operator<<(ostream& out, const Punto& p){
         out << "Punto(x: " << p.fil << ", y: " << p.col << ")";
         return out;

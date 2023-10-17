@@ -49,64 +49,80 @@ void Laberinto::print(){
     }
 }
 bool Laberinto::posValida(int fila, int columna){
-    return ((fila >= 0 && fila <= 10 && columna >= 0
-            && columna <= 21) && (laberinto[fila][columna] != '#'));
+    return (fila >= 0 && fila <= 10 && columna >= 0 && columna <= 21 && laberinto[fila][columna] == ' ');
 }
 bool Laberinto::noPosAnterior(int fila, int columna){
-    return (fila != visitados.top().getFil() && columna != visitados.top().getCol());
+    return ((fila != visitados.top().getFil()) || (columna != visitados.top().getCol()));
 }
-void Laberinto::iniciar(const Punto& salida){
-    Punto currentSpot = salida;
-    bool flag = false;
-    if (posValida(salida.getFil(), salida.getCol())){
-        flag = true;
-        laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
-        visitados.push(Punto(currentSpot.getFil(),currentSpot.getCol()));
-        print();
+void Laberinto::buscarAlternativas(const Punto& currentSpot, int& cont){
+    cont = 0;
+    if (posValida(currentSpot.getFil() + 1, currentSpot.getCol())
+        && noPosAnterior(currentSpot.getFil() + 1,currentSpot.getCol())){
+        alternativas.push(Punto(currentSpot.getFil() + 1,currentSpot.getCol()));
+        cont ++;
     }
+    if (posValida(currentSpot.getFil(), currentSpot.getCol() - 1)
+        && noPosAnterior(currentSpot.getFil(),currentSpot.getCol() - 1)){
+        alternativas.push(Punto(currentSpot.getFil(),currentSpot.getCol() - 1));
+        cont ++;
+    }
+    if (posValida(currentSpot.getFil(), currentSpot.getCol() + 1)
+        && noPosAnterior(currentSpot.getFil(),currentSpot.getCol() + 1)){
+        alternativas.push(Punto(currentSpot.getFil(),currentSpot.getCol() + 1));
+        cont ++;
+    }
+    if (posValida(currentSpot.getFil() - 1, currentSpot.getCol())
+        && noPosAnterior(currentSpot.getFil() - 1,currentSpot.getCol())){
+        alternativas.push(Punto(currentSpot.getFil() - 1,currentSpot.getCol()));
+        cont ++;
+    }
+}
+void Laberinto::iniciar(const Punto& entrada){
+    Punto exitSpot(2,0), currentSpot = entrada;
+    bool flag = true;
+    int cont = 0;
+    laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
+    visitados.push(currentSpot);
+    buscarAlternativas(currentSpot,cont);
+    print();
     while(flag){
-        if (posValida(currentSpot.getFil() - 1, currentSpot.getCol())){
-            currentSpot.setFil(currentSpot.getFil() - 1);
-            if (noPosAnterior(currentSpot.getFil(),currentSpot.getCol())){
-                laberinto[currentSpot.getFil()][currentSpot.getCol()] = '-';
-            }
-            else {
-                laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
-            }
-            visitados.push(Punto(currentSpot.getFil(),currentSpot.getCol()));
+        if (currentSpot == exitSpot){
+            cout << "\n\tYOU WIN!\n" << endl;
+            break;
         }
-        else if (posValida(currentSpot.getFil(), currentSpot.getCol() + 1)){
-            currentSpot.setCol(currentSpot.getCol() + 1);
-            if (noPosAnterior(currentSpot.getFil(),currentSpot.getCol())){
-                laberinto[currentSpot.getFil()][currentSpot.getCol()] = '-';
-            }
-            else {
-                laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
-            }
-            visitados.push(Punto(currentSpot.getFil(),currentSpot.getCol()));
+        else if (cont == 0 && visitados.size() == 1){
+            cout << "\n\tYOU'RE STUCK!\n" << endl;
+            break;
         }
-        else if (posValida(currentSpot.getFil(), currentSpot.getCol() - 1)){
-            currentSpot.setCol(currentSpot.getCol() - 1);
-            if (noPosAnterior(currentSpot.getFil(),currentSpot.getCol())){
-                laberinto[currentSpot.getFil()][currentSpot.getCol()] = '-';
-            }
-            else {
-                laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
-            }
-            visitados.push(Punto(currentSpot.getFil(),currentSpot.getCol()));
+        else if (cont == 1){
+            currentSpot = alternativas.top();
+            alternativas.pop();
+            visitados.push(currentSpot);
+            laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
+            buscarAlternativas(currentSpot,cont);
         }
-        else if (posValida(currentSpot.getFil() + 1, currentSpot.getCol())){
-            currentSpot.setFil(currentSpot.getFil() + 1);
-            if (noPosAnterior(currentSpot.getFil(),currentSpot.getCol())){
-                laberinto[currentSpot.getFil()][currentSpot.getCol()] = '-';
+        else if (cont == 0 && visitados.size() > 1){
+            visitados.pop();
+            currentSpot = visitados.top();
+            if (currentSpot.getFil() == -1 && currentSpot.getCol() == -1){
+                visitados.pop();
+                currentSpot = visitados.top();
             }
-            else {
-                laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
-            }
-            visitados.push(Punto(currentSpot.getFil(),currentSpot.getCol()));
+            laberinto[currentSpot.getFil()][currentSpot.getCol()] = '-';
+            cont++;
+            /*currentSpot = alternativas.top();
+            alternativas.pop();
+            visitados.push(currentSpot);
+            laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
+            buscarAlternativas(currentSpot,cont);*/
         }
-        else if (currentSpot.getFil() == 2 && currentSpot.getCol() == 0){
-            flag = false;
+        else if (cont > 1){
+            currentSpot = alternativas.top();
+            alternativas.pop();
+            visitados.push(Punto());
+            visitados.push(currentSpot);
+            laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
+            buscarAlternativas(currentSpot,cont);
         }
         print();
     }
