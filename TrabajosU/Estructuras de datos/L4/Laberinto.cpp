@@ -6,19 +6,18 @@
 #include <fstream>
 
 Laberinto::Laberinto(){
-    for (int i=0; i<11; i++){
-        for (int j=0; j<22; j++){
-            laberinto[i][j] = ' ';
-        }
-    }
+    laberinto = {};
 }
-Laberinto::Laberinto(char laberinto[11][22], Stack<Punto>& visitados, Stack<Punto>& alternativas):
-        visitados(visitados), alternativas(alternativas){
-    for (int i=0; i<11; i++){
-        for (int j=0; j<22; j++){
-            this->laberinto[i][j] = laberinto[i][j];
-        }
+Laberinto::Laberinto(vector<vector<char>>& laberinto, Stack<Punto>& visitados, Stack<Punto>& alternativas):
+        visitados(visitados), alternativas(alternativas), laberinto(laberinto){}
+
+bool Laberinto::cumpleTam(){
+    auto tam = laberinto[0].size();
+
+    for (const auto& fil : laberinto){
+        if (fil.size() != tam) return false;
     }
+    return true;
 }
 void Laberinto::cargar(){
     string docu,linea,fila;
@@ -30,26 +29,37 @@ void Laberinto::cargar(){
     if (archivo.is_open()) {
         while (getline(archivo, linea)) {
             fila = linea;
+            laberinto.emplace_back();
             for (int j=0; j<linea.size(); j++){
-                laberinto[i][j] = linea[j];
+                laberinto[i].push_back(linea[j]);
             }
             i++;
         }
         archivo.close();
+        if (!cumpleTam()){
+            cout << "\n\t- El laberinto no cumple con las condiciones minimas. -\n" << endl;
+            laberinto.clear();
+        }
     } else {
         cout << "No se pudo abrir el archivo";
     }
 }
 void Laberinto::print(){
-    for (int i=0; i<11; i++){
-        for (int j=0; j<22; j++){
+    for (int i=0; i<laberinto.size(); i++){
+        for (int j=0; j<laberinto[0].size(); j++){
             cout << laberinto[i][j];
         }
         cout << endl;
     }
 }
+bool Laberinto::esSalida(const Punto& currentSpot){
+    return (currentSpot.getFil() == 0
+        || currentSpot.getFil() == laberinto.size() - 1
+        || currentSpot.getCol() == 0
+        || currentSpot.getCol() == laberinto[0].size() - 1);
+}
 bool Laberinto::posValida(int fila, int columna){
-    return (fila >= 0 && fila <= 10 && columna >= 0 && columna <= 21 && laberinto[fila][columna] == ' ');
+    return (fila >= 0 && fila < laberinto.size() && columna >= 0 && columna < laberinto[0].size() && laberinto[fila][columna] == ' ');
 }
 bool Laberinto::noPosAnterior(int fila, int columna){
     return ((fila != visitados.top().getFil()) || (columna != visitados.top().getCol()));
@@ -78,7 +88,8 @@ void Laberinto::buscarAlternativas(const Punto& currentSpot, int& cont){
     }
 }
 void Laberinto::iniciar(const Punto& entrada){
-    Punto exitSpot(2,0), currentSpot = entrada;
+    if (laberinto.empty()) return;
+    Punto currentSpot = entrada;
     bool flag = true;
     int cont = 0;
     laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
@@ -86,7 +97,7 @@ void Laberinto::iniciar(const Punto& entrada){
     buscarAlternativas(currentSpot,cont);
     print();
     while(flag){
-        if (currentSpot == exitSpot){
+        if (esSalida(currentSpot)){
             cout << "\n\tYOU WIN!\n" << endl;
             break;
         }
@@ -125,5 +136,11 @@ void Laberinto::iniciar(const Punto& entrada){
             buscarAlternativas(currentSpot,cont);
         }
         print();
+        cout << "Contador: " << cont << endl;
+        cout << "Current: " << currentSpot << endl;
+        cout << "Visitados: " << endl;
+        visitados.print();
+        cout << "Alternativas: " << endl;
+        alternativas.print();
     }
 }

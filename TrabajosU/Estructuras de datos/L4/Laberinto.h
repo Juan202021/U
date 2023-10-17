@@ -8,14 +8,16 @@
 #include "Punto.h"
 
 class Laberinto {
-    char laberinto[11][22]{};
+    vector<vector<char>> laberinto;
     Stack<Punto> visitados;
     Stack<Punto> alternativas;
 public:
     Laberinto();
-    Laberinto(char laberinto[11][22], Stack<Punto>& visitados, Stack<Punto>& alternativas);
+    Laberinto(vector<vector<char>>& laberinto, Stack<Punto>& visitados, Stack<Punto>& alternativas);
+    bool cumpleTam();
     void cargar();
     void print();
+    bool esSalida(const Punto& currentSpot);
     bool posValida(int fila, int columna);
     bool noPosAnterior(int fila, int columna);
     void buscarAlternativas(const Punto& currentSpot, int& cont);

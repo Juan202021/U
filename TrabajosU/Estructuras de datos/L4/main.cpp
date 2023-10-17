@@ -5,9 +5,10 @@ using namespace std;
 
 int main() {
     Laberinto laberinto;
-    Punto p(8,1);
+    Punto p(8,15);
     laberinto.cargar();
     laberinto.iniciar(p);
+
 
     return 0;
 }
