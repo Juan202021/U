@@ -1,0 +1,32 @@
+Las secuencias de escape ANSI te permiten cambiar el color del texto y el fondo en la consola utilizando códigos numéricos. Aquí tienes una lista de algunos de los códigos de colores más comunes que puedes utilizar con secuencias de escape ANSI:
+
+**Texto (Foreground)**
+- 30: Negro
+- 31: Rojo
+- 32: Verde
+- 33: Amarillo
+- 34: Azul
+- 35: Magenta
+- 36: Cian
+- 37: Blanco
+
+**Fondo (Background)**
+- 40: Negro
+- 41: Rojo
+- 42: Verde
+- 43: Amarillo
+- 44: Azul
+- 45: Magenta
+- 46: Cian
+- 47: Blanco
+
+Puedes combinar estos códigos para cambiar tanto el color del texto como el del fondo. Por ejemplo, `\x1b[31;42m` cambiará el color del texto a rojo sobre un fondo verde.
+
+Además, algunos sistemas también admiten estilos adicionales, como el texto brillante (intensidad alta) o parpadeante, que se pueden lograr utilizando códigos adicionales:
+
+- 1: Texto brillante (intensidad alta)
+- 5: Parpadeante
+
+Por ejemplo, `\x1b[1;31;42m` cambiará el texto a rojo brillante sobre un fondo verde.
+
+Es importante tener en cuenta que la compatibilidad con secuencias de escape ANSI puede variar según la terminal y el sistema operativo, por lo que es posible que no todos los códigos estén disponibles en todas las terminales. Siempre es recomendable probar tus secuencias de escape en la terminal específica en la que deseas utilizarlas para asegurarte de que funcionen como se espera.

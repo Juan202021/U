@@ -1,9 +1,9 @@
 //
 // Created by Juan on 10/13/2023.
 //
-
+#ifndef L4_LABERINTO_CPP
+#define L4_LABERINTO_CPP
 #include "Laberinto.h"
-#include <fstream>
 
 Laberinto::Laberinto(){
     laberinto = {};
@@ -44,13 +44,31 @@ void Laberinto::cargar(){
         cout << "No se pudo abrir el archivo";
     }
 }
-void Laberinto::print(){
+void Laberinto::print(const Punto& currentSpot = Punto()){
+    //system("cls");
+    cout << endl;
     for (int i=0; i<laberinto.size(); i++){
         for (int j=0; j<laberinto[0].size(); j++){
-            cout << laberinto[i][j];
+            if (laberinto[i][j] == '#'){
+                cout << "\x1b[33m" << char(219) << "\x1b[0m";
+            }
+            else if (i == currentSpot.getFil() && j == currentSpot.getCol()){
+                cout << "\x1b[5;35;44m" << char(254) << "\x1b[0m";
+            }
+            else if (laberinto[i][j] == 'O'){
+                cout << "\x1b[36m" << char(219) << "\x1b[0m";
+            }
+            else if (laberinto[i][j] == '-'){
+                cout << "\x1b[31m" << char(219) << "\x1b[0m";
+            }
+            else {
+                cout << "\x1b[36;44m" << laberinto[i][j] << "\x1b[0m";
+            }
+
         }
         cout << endl;
     }
+    cout << endl;
 }
 bool Laberinto::esSalida(const Punto& currentSpot){
     return (currentSpot.getFil() == 0
@@ -87,6 +105,15 @@ void Laberinto::buscarAlternativas(const Punto& currentSpot, int& cont){
         cont ++;
     }
 }
+bool Laberinto::continuar(){
+    string res;
+    do {
+        cout << "Desea continuar? (S/N): ";
+        cin >> res;
+    } while (res != "S" && res != "s" && res != "N" && res != "n");
+    if (res == "S" || res == "s") return true;
+    return false;
+}
 void Laberinto::iniciar(const Punto& entrada){
     if (laberinto.empty()) return;
     Punto currentSpot = entrada;
@@ -95,13 +122,14 @@ void Laberinto::iniciar(const Punto& entrada){
     laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
     visitados.push(currentSpot);
     buscarAlternativas(currentSpot,cont);
-    print();
+    print(currentSpot);
+    flag = continuar();
     while(flag){
         if (esSalida(currentSpot)){
             cout << "\n\tYOU WIN!\n" << endl;
             break;
         }
-        else if (cont == 0 && visitados.size() == 1){
+        else if (alternativas.size() == 0 && visitados.size() == 1){
             cout << "\n\tYOU'RE STUCK!\n" << endl;
             break;
         }
@@ -118,14 +146,9 @@ void Laberinto::iniciar(const Punto& entrada){
             if (currentSpot.getFil() == -1 && currentSpot.getCol() == -1){
                 visitados.pop();
                 currentSpot = visitados.top();
+                cont++;
             }
             laberinto[currentSpot.getFil()][currentSpot.getCol()] = '-';
-            cont++;
-            /*currentSpot = alternativas.top();
-            alternativas.pop();
-            visitados.push(currentSpot);
-            laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
-            buscarAlternativas(currentSpot,cont);*/
         }
         else if (cont > 1){
             currentSpot = alternativas.top();
@@ -135,12 +158,14 @@ void Laberinto::iniciar(const Punto& entrada){
             laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
             buscarAlternativas(currentSpot,cont);
         }
-        print();
+        print(currentSpot);
         cout << "Contador: " << cont << endl;
         cout << "Current: " << currentSpot << endl;
         cout << "Visitados: " << endl;
         visitados.print();
         cout << "Alternativas: " << endl;
         alternativas.print();
+        //flag = continuar();
     }
 }
+#endif
