@@ -50,19 +50,24 @@ void Laberinto::print(const Punto& currentSpot = Punto()){
     for (int i=0; i<laberinto.size(); i++){
         for (int j=0; j<laberinto[0].size(); j++){
             if (laberinto[i][j] == '#'){
-                cout << "\x1b[33m" << char(219) << "\x1b[0m";
+                //cout << "\x1b[33m" << char(219) << "\x1b[0m"; paredes amarillas
+                cout << "\x1b[1;35m" << char(219) << "\x1b[0m";
             }
             else if (i == currentSpot.getFil() && j == currentSpot.getCol()){
-                cout << "\x1b[5;35;44m" << char(254) << "\x1b[0m";
+                //cout << "\x1b[5;35;46m" << char(254) << "\x1b[0m";
+                cout << "\x1b[5;34;46m" << char(254) << "\x1b[0m";
             }
             else if (laberinto[i][j] == 'O'){
-                cout << "\x1b[36m" << char(219) << "\x1b[0m";
+                //cout << "\x1b[36m" << char(219) << "\x1b[0m"; cian
+                cout << "\x1b[1;36m" << char(219) << "\x1b[0m";
             }
             else if (laberinto[i][j] == '-'){
                 cout << "\x1b[31m" << char(219) << "\x1b[0m";
             }
             else {
-                cout << "\x1b[36;44m" << laberinto[i][j] << "\x1b[0m";
+                //cout << "\x1b[34m" << char(219) << "\x1b[0m"; espacios azul
+                cout << "\x1b[1;33m" << char(219) << "\x1b[0m";
+
             }
 
         }
