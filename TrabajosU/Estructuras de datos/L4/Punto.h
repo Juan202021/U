@@ -8,20 +8,19 @@
 using namespace std;
 
 class Punto {
-    int fil,col;
+    int fil,col,cantAlternativas;
 public:
     Punto();
-    Punto(int fil, int col);
+    Punto(int fil, int col, int cantAlternativas);
     Punto(const Punto& p);
     int getFil() const;
     void setFil(int fil);
     int getCol() const;
     void setCol(int col);
+    int getCantAlternativas() const;
+    void setCantAlternativas(int cantAlternativas);
     bool operator==(const Punto& p) const;
-    friend ostream& operator<<(ostream& out, const Punto& p){
-        out << "Punto(x: " << p.fil << ", y: " << p.col << ")";
-        return out;
-    }
+    friend ostream& operator<<(ostream& out, const Punto& p);
 };
 
 #endif //L4_PUNTO_H

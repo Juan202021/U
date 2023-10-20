@@ -22,7 +22,7 @@ public:
     bool esSalida(const Punto& currentSpot);
     bool posValida(int fila, int columna);
     bool noPosAnterior(int fila, int columna);
-    void buscarAlternativas(const Punto& currentSpot, int& cont);
+    void buscarAlternativas(Punto& currentSpot);
     bool continuar();
     void iniciar(const Punto& salida);
 };

@@ -101,7 +101,7 @@ T& List<T>::get(int pos) const{
 // Verificar si la posición es válida (dentro del rango permitido)
     if(pos < 0 || pos>count-1){
         cout << "Error! The position is out of range." << endl;
-        //assert(false);
+        assert(false);
     }
 // Si la posición es 0, devolver el valor del primer elemento
     if(pos == 0){

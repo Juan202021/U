@@ -50,26 +50,27 @@ void Laberinto::print(const Punto& currentSpot = Punto()){
     for (int i=0; i<laberinto.size(); i++){
         for (int j=0; j<laberinto[0].size(); j++){
             if (laberinto[i][j] == '#'){
-                //cout << "\x1b[33m" << char(219) << "\x1b[0m"; paredes amarillas
-                cout << "\x1b[1;35m" << char(219) << "\x1b[0m";
+                cout << "\x1b[33m" << char(219) << "\x1b[0m";
+                //cout << "\x1b[35m" << char(219) << "\x1b[0m";
             }
             else if (i == currentSpot.getFil() && j == currentSpot.getCol()){
-                //cout << "\x1b[5;35;46m" << char(254) << "\x1b[0m";
-                cout << "\x1b[5;34;46m" << char(254) << "\x1b[0m";
+                if (laberinto[i][j] == '-') cout << "\x1b[5;35;41m" << char(254) << "\x1b[0m";
+                else { cout << "\x1b[5;35;46m" << char(254) << "\x1b[0m"; }
+
+                //if (laberinto[i][j] == '-') cout << "\x1b[5;34;41m" << char(254) << "\x1b[0m";
+                //else { cout << "\x1b[5;34;46m" << char(254) << "\x1b[0m"; }
             }
             else if (laberinto[i][j] == 'O'){
-                //cout << "\x1b[36m" << char(219) << "\x1b[0m"; cian
-                cout << "\x1b[1;36m" << char(219) << "\x1b[0m";
+                cout << "\x1b[36m" << char(219) << "\x1b[0m";
+                //cout << "\x1b[1;36m" << char(219) << "\x1b[0m";
             }
             else if (laberinto[i][j] == '-'){
                 cout << "\x1b[31m" << char(219) << "\x1b[0m";
             }
             else {
-                //cout << "\x1b[34m" << char(219) << "\x1b[0m"; espacios azul
-                cout << "\x1b[1;33m" << char(219) << "\x1b[0m";
-
+                cout << "\x1b[34m" << char(219) << "\x1b[0m"; //espacio azul
+                //cout << "\x1b[1;33m" << char(219) << "\x1b[0m";
             }
-
         }
         cout << endl;
     }
@@ -85,29 +86,29 @@ bool Laberinto::posValida(int fila, int columna){
     return (fila >= 0 && fila < laberinto.size() && columna >= 0 && columna < laberinto[0].size() && laberinto[fila][columna] == ' ');
 }
 bool Laberinto::noPosAnterior(int fila, int columna){
-    return ((fila != visitados.top().getFil()) || (columna != visitados.top().getCol()));
+    return (visitados.size() == 0) || ((fila != visitados.top().getFil()) || (columna != visitados.top().getCol()));
 }
-void Laberinto::buscarAlternativas(const Punto& currentSpot, int& cont){
-    cont = 0;
+void Laberinto::buscarAlternativas(Punto& currentSpot){
+    currentSpot.setCantAlternativas(0);
     if (posValida(currentSpot.getFil() + 1, currentSpot.getCol())
         && noPosAnterior(currentSpot.getFil() + 1,currentSpot.getCol())){
-        alternativas.push(Punto(currentSpot.getFil() + 1,currentSpot.getCol()));
-        cont ++;
+        alternativas.push(Punto(currentSpot.getFil() + 1,currentSpot.getCol(),0));
+        currentSpot.setCantAlternativas(currentSpot.getCantAlternativas()+1);
     }
     if (posValida(currentSpot.getFil(), currentSpot.getCol() - 1)
         && noPosAnterior(currentSpot.getFil(),currentSpot.getCol() - 1)){
-        alternativas.push(Punto(currentSpot.getFil(),currentSpot.getCol() - 1));
-        cont ++;
+        alternativas.push(Punto(currentSpot.getFil(),currentSpot.getCol() - 1,0));
+        currentSpot.setCantAlternativas(currentSpot.getCantAlternativas()+1);
     }
     if (posValida(currentSpot.getFil(), currentSpot.getCol() + 1)
         && noPosAnterior(currentSpot.getFil(),currentSpot.getCol() + 1)){
-        alternativas.push(Punto(currentSpot.getFil(),currentSpot.getCol() + 1));
-        cont ++;
+        alternativas.push(Punto(currentSpot.getFil(),currentSpot.getCol() + 1,0));
+        currentSpot.setCantAlternativas(currentSpot.getCantAlternativas()+1);
     }
     if (posValida(currentSpot.getFil() - 1, currentSpot.getCol())
         && noPosAnterior(currentSpot.getFil() - 1,currentSpot.getCol())){
-        alternativas.push(Punto(currentSpot.getFil() - 1,currentSpot.getCol()));
-        cont ++;
+        alternativas.push(Punto(currentSpot.getFil() - 1,currentSpot.getCol(),0));
+        currentSpot.setCantAlternativas(currentSpot.getCantAlternativas()+1);
     }
 }
 bool Laberinto::continuar(){
@@ -123,10 +124,9 @@ void Laberinto::iniciar(const Punto& entrada){
     if (laberinto.empty()) return;
     Punto currentSpot = entrada;
     bool flag = true;
-    int cont = 0;
     laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
+    buscarAlternativas(currentSpot);
     visitados.push(currentSpot);
-    buscarAlternativas(currentSpot,cont);
     print(currentSpot);
     flag = continuar();
     while(flag){
@@ -134,37 +134,43 @@ void Laberinto::iniciar(const Punto& entrada){
             cout << "\n\tYOU WIN!\n" << endl;
             break;
         }
-        else if (alternativas.size() == 0 && visitados.size() == 1){
-            cout << "\n\tYOU'RE STUCK!\n" << endl;
+        else if ((alternativas.size() == 0 || currentSpot.getCantAlternativas() == 0) && visitados.size() == 1){
+            cout << "\n\tNO EXIT, NO CHEESE, NO SALVATION!\n" << endl;
             break;
         }
-        else if (cont == 1){
+        else if (currentSpot.getCantAlternativas() == 1){
+            visitados.top().setCantAlternativas(0);
             currentSpot = alternativas.top();
             alternativas.pop();
+            buscarAlternativas(currentSpot);
             visitados.push(currentSpot);
             laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
-            buscarAlternativas(currentSpot,cont);
         }
-        else if (cont == 0 && visitados.size() > 1){
+        else if (currentSpot.getCantAlternativas() == 0 && visitados.size() > 1){
             visitados.pop();
-            currentSpot = visitados.top();
-            if (currentSpot.getFil() == -1 && currentSpot.getCol() == -1){
+            if (visitados.top().getFil() == -1 && visitados.top().getCol() == -1){
                 visitados.pop();
+                buscarAlternativas(visitados.top());
                 currentSpot = visitados.top();
-                cont++;
+            }
+            else {
+                buscarAlternativas(visitados.top());
+                currentSpot = visitados.top();
             }
             laberinto[currentSpot.getFil()][currentSpot.getCol()] = '-';
         }
-        else if (cont > 1){
+        else if (currentSpot.getCantAlternativas() > 1){
             currentSpot = alternativas.top();
-            alternativas.pop();
+            for (int i=0; i<visitados.top().getCantAlternativas(); i++){
+                alternativas.pop();
+            }
             visitados.push(Punto());
+            buscarAlternativas(currentSpot);
             visitados.push(currentSpot);
             laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
-            buscarAlternativas(currentSpot,cont);
         }
         print(currentSpot);
-        cout << "Contador: " << cont << endl;
+        cout << "CantAlternativas: " << currentSpot.getCantAlternativas() << endl;
         cout << "Current: " << currentSpot << endl;
         cout << "Visitados: " << endl;
         visitados.print();

@@ -2,7 +2,7 @@
 #define LAB3_LIST_H
 
 #include <iostream>
-//#include <cassert>
+#include <cassert>
 using namespace std;
 
 template<typename T>
