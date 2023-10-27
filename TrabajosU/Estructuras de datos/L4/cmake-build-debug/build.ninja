@@ -51,31 +51,37 @@ build cmake_object_order_depends_target_L4: phony || CMakeFiles/L4.dir
 
 build CMakeFiles/L4.dir/main.cpp.obj: CXX_COMPILER__L4_Debug C$:/Users/Juan/JAristizabal/U/TrabajosU/Estructuras$ de$ datos/L4/main.cpp || cmake_object_order_depends_target_L4
   DEP_FILE = CMakeFiles\L4.dir\main.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always -std=gnu++20
+  FLAGS = -g -fdiagnostics-color=always -mwindows -std=gnu++20
   OBJECT_DIR = CMakeFiles\L4.dir
   OBJECT_FILE_DIR = CMakeFiles\L4.dir
 
 build CMakeFiles/L4.dir/List.cpp.obj: CXX_COMPILER__L4_Debug C$:/Users/Juan/JAristizabal/U/TrabajosU/Estructuras$ de$ datos/L4/List.cpp || cmake_object_order_depends_target_L4
   DEP_FILE = CMakeFiles\L4.dir\List.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always -std=gnu++20
+  FLAGS = -g -fdiagnostics-color=always -mwindows -std=gnu++20
   OBJECT_DIR = CMakeFiles\L4.dir
   OBJECT_FILE_DIR = CMakeFiles\L4.dir
 
 build CMakeFiles/L4.dir/Stack.cpp.obj: CXX_COMPILER__L4_Debug C$:/Users/Juan/JAristizabal/U/TrabajosU/Estructuras$ de$ datos/L4/Stack.cpp || cmake_object_order_depends_target_L4
   DEP_FILE = CMakeFiles\L4.dir\Stack.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always -std=gnu++20
+  FLAGS = -g -fdiagnostics-color=always -mwindows -std=gnu++20
   OBJECT_DIR = CMakeFiles\L4.dir
   OBJECT_FILE_DIR = CMakeFiles\L4.dir
 
 build CMakeFiles/L4.dir/Punto.cpp.obj: CXX_COMPILER__L4_Debug C$:/Users/Juan/JAristizabal/U/TrabajosU/Estructuras$ de$ datos/L4/Punto.cpp || cmake_object_order_depends_target_L4
   DEP_FILE = CMakeFiles\L4.dir\Punto.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always -std=gnu++20
+  FLAGS = -g -fdiagnostics-color=always -mwindows -std=gnu++20
   OBJECT_DIR = CMakeFiles\L4.dir
   OBJECT_FILE_DIR = CMakeFiles\L4.dir
 
 build CMakeFiles/L4.dir/Laberinto.cpp.obj: CXX_COMPILER__L4_Debug C$:/Users/Juan/JAristizabal/U/TrabajosU/Estructuras$ de$ datos/L4/Laberinto.cpp || cmake_object_order_depends_target_L4
   DEP_FILE = CMakeFiles\L4.dir\Laberinto.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always -std=gnu++20
+  FLAGS = -g -fdiagnostics-color=always -mwindows -std=gnu++20
+  OBJECT_DIR = CMakeFiles\L4.dir
+  OBJECT_FILE_DIR = CMakeFiles\L4.dir
+
+build CMakeFiles/L4.dir/Interfaces.cpp.obj: CXX_COMPILER__L4_Debug C$:/Users/Juan/JAristizabal/U/TrabajosU/Estructuras$ de$ datos/L4/Interfaces.cpp || cmake_object_order_depends_target_L4
+  DEP_FILE = CMakeFiles\L4.dir\Interfaces.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always -mwindows -std=gnu++20
   OBJECT_DIR = CMakeFiles\L4.dir
   OBJECT_FILE_DIR = CMakeFiles\L4.dir
 
@@ -87,9 +93,9 @@ build CMakeFiles/L4.dir/Laberinto.cpp.obj: CXX_COMPILER__L4_Debug C$:/Users/Juan
 #############################################
 # Link the executable L4.exe
 
-build L4.exe: CXX_EXECUTABLE_LINKER__L4_Debug CMakeFiles/L4.dir/main.cpp.obj CMakeFiles/L4.dir/List.cpp.obj CMakeFiles/L4.dir/Stack.cpp.obj CMakeFiles/L4.dir/Punto.cpp.obj CMakeFiles/L4.dir/Laberinto.cpp.obj
+build L4.exe: CXX_EXECUTABLE_LINKER__L4_Debug CMakeFiles/L4.dir/main.cpp.obj CMakeFiles/L4.dir/List.cpp.obj CMakeFiles/L4.dir/Stack.cpp.obj CMakeFiles/L4.dir/Punto.cpp.obj CMakeFiles/L4.dir/Laberinto.cpp.obj CMakeFiles/L4.dir/Interfaces.cpp.obj
   FLAGS = -g
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = -lwinmm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\L4.dir
   POST_BUILD = cd .
   PRE_LINK = cd .

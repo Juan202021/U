@@ -1,6 +1,7 @@
 #ifndef LAB3_LIST_H
 #define LAB3_LIST_H
 
+#include <windows.h>
 #include <iostream>
 #include <cassert>
 using namespace std;
