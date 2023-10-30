@@ -4,11 +4,6 @@
 
 using namespace std;
 
-struct winsize {
-    int ws_row;
-    int ws_col;
-};
-
 int main() {
     HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -34,10 +29,7 @@ int main() {
     SetWindowLong(consoleWindow, GWL_STYLE,GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
 
     system("title LABERINTO C++");
-    system("mode con: cols=65 lines=18");
-
-    /*cout << "Yes" << endl;
-    system("pause");*/
+    system("mode con: cols=73 lines=22");
 
     menu_principal();
 

@@ -4,7 +4,10 @@
 #ifndef L4_LABERINTO_CPP
 #define L4_LABERINTO_CPP
 #include "Laberinto.h"
+#include "interfaces.h"
 #include <conio.h>
+#include <limits>
+#include <filesystem>
 
 HANDLE hConsol = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -20,6 +23,7 @@ int Laberinto::getTamanioC(){
     return laberinto[0].size();
 }
 bool Laberinto::cumpleTam(){
+    if (laberinto.empty()) return false;
     auto tam = laberinto[0].size();
     for (const auto& fil : laberinto){
         for (auto pos:fil){
@@ -27,22 +31,35 @@ bool Laberinto::cumpleTam(){
         }
     }
     for (const auto& fil : laberinto){
-        if (fil.size() != tam) return false;
+        if (fil.size() != tam || tam > 22 || laberinto.size() > 11 || tam < 3 || laberinto.size() < 3) return false;
     }
     return true;
 }
 bool Laberinto::cargar(){
     string docu,linea,fila;
     int i=0;
-    system("cls");
-    cuadro(0,0,64,17);
-    gotoxy(5,6);
-    cout << char(254) << " Ingrese el nombre del archivo sin ninguna extension " << char(254) << endl;
-    cout << "\n\t\t\t> ";
-    cin >> docu;
+    string titulo = " Seleccione el archivo del cual desea cargar el laberinto ";
+    titulo.insert(titulo.begin(),char(254));
+    titulo.push_back(char(254));
+    vector<string> opciones;
+    erase(1,1,71,20);
+    string directorio = "C:\\Users\\Juan\\JAristizabal\\U\\TrabajosU\\Estructuras de datos\\L4"; // Reemplaza con la ruta de tu directorio
+
+    for (const auto& entry : filesystem::directory_iterator(directorio)) {
+        if (filesystem::is_regular_file(entry) && entry.path().extension() == ".txt") {
+            // Verificar si el nombre del archivo no es "CMakeLists.txt" ni "ColorTexto.txt"
+            auto nombreArchivo = entry.path().filename();
+            if (nombreArchivo != "CMakeLists.txt" && nombreArchivo != "ColorTexto.txt") {
+                docu = nombreArchivo.string();
+                opciones.push_back(docu);
+            }
+        }
+    }
+    i = menu(titulo,opciones,8);
     // Abrir el archivo
-    ifstream archivo("C:\\Users\\Juan\\JAristizabal\\U\\TrabajosU\\Estructuras de datos\\L4\\" + docu + ".txt");
+    ifstream archivo(directorio + "\\" + opciones[i-1]);
     if (archivo.is_open()) {
+        i = 0;
         while (getline(archivo, linea)) {
             fila = linea;
             laberinto.emplace_back();
@@ -53,22 +70,24 @@ bool Laberinto::cargar(){
         }
         archivo.close();
         if (!cumpleTam()){
-            cout << "\n\n\t- El laberinto no cumple con las condiciones minimas. -\n" << endl;
-            laberinto.clear();
+            gotoxy(9,18);
+            SetConsoleTextAttribute(hConsol, 4);
+            cout << "- El laberinto no cumple con las condiciones minimas. -" << endl;
             return false;
         }
     } else {
-        cout << "\n\n\n\t\t- No se pudo abrir el archivo. -\n";
+        gotoxy(11,18);
+        cout << "- No se pudo abrir el archivo. -\n";
         return false;
     }
     return true;
 }
 void Laberinto::print(const Punto& currentSpot = Punto()){
-    system("cls");
     SetConsoleTextAttribute(hConsol, 9);
     cuadro(0,0,25,12);
-    cuadro(0,13,64,4);
-    cuadro(26,0,38,12);
+    cuadro(0,13,72,8);
+    cuadro(26,0,46,12);
+    erase(1,1,23,10);
     for (int i=0; i<laberinto.size(); i++){
         gotoxy(2,1+i);
         for (int j=0; j<laberinto[0].size(); j++){
@@ -103,12 +122,11 @@ void Laberinto::print(const Punto& currentSpot = Punto()){
     PlaySound((LPCSTR)cancion, NULL, SND_FILENAME | SND_ASYNC);
     cout << endl;
     this_thread::sleep_for(chrono::seconds(1));
-    //system("cls");
 }
 void Laberinto::printPos(const Punto& currentSpot = Punto()){
-    system("cls");
+    erase(25,2,42,12);
     for (int i=0; i<laberinto.size(); i++){
-        gotoxy(21,2+i);
+        gotoxy(25,2+i);
         for (int j=0; j<laberinto[0].size(); j++){
             if (i == currentSpot.getFil() && j == currentSpot.getCol()){
                 if (laberinto[i][j] == ' ') cout << "\x1b[5;35;44m" << char(254) << "\x1b[0m";
@@ -128,6 +146,34 @@ void Laberinto::printPos(const Punto& currentSpot = Punto()){
     // Reproduce la canción de forma asíncrona.
     PlaySound((LPCSTR)cancion, NULL, SND_FILENAME | SND_ASYNC);
     //this_thread::sleep_for(chrono::seconds(1));
+}
+void Laberinto::printSPots(const List<Punto>& spots){
+    int y = 1;
+    erase(27,1,44,11);
+    for (int i = spots.size()-1 ; i>=0; i--){
+        if ( y == 55){
+            gotoxy(63,y-44);
+            cout << "..." << endl;
+            return;
+        }
+        else if (y > 11 && y <= 22){
+            gotoxy(36,y-11);
+        }
+        else if (y > 22 && y <= 33){
+            gotoxy(45,y-22);
+        }
+        else if (y > 33 && y <= 44){
+            gotoxy(54,y-33);
+        }
+        else if (y > 44 && y <= 55){
+            gotoxy(63,y-44);
+        }
+        else {
+            gotoxy(27,y);
+        }
+        cout << spots.get(i) << endl;
+        y++;
+    }
 }
 bool Laberinto::esSalida(const Punto& currentSpot){
     return (currentSpot.getFil() == 0
@@ -183,22 +229,28 @@ bool Laberinto::continuar(){
             flag = false;
         }
     }
+
 }
 void Laberinto::iniciar(const Punto& entrada){
-    if (laberinto.empty()) return;
     Punto currentSpot = entrada;
     bool flag = true;
+    List<Punto> spots;
+    erase(1,1,71,20);
     laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
     buscarAlternativas(currentSpot);
     visitados.push(currentSpot);
+    spots.insert(0,currentSpot);
     print(currentSpot);
+    printSPots(spots);
     while(flag){
         if (esSalida(currentSpot)){
-            cout << "\n\t\t    YOU WIN, CHEESE IS YOURS!\n" << endl;
+            gotoxy(24,15);
+            cout << "YOU WIN, CHEESE IS YOURS!\n" << endl;
             break;
         }
         else if ((alternativas.size() == 0 || currentSpot.getCantAlternativas() == 0) && visitados.size() == 1){
-            cout << "\n\t\tNO EXIT, NO CHEESE, NO SALVATION!\n" << endl;
+            gotoxy(20,15);
+            cout << "NO EXIT, NO CHEESE, NO SALVATION!\n" << endl;
             break;
         }
         else if (currentSpot.getCantAlternativas() == 1){
@@ -207,6 +259,7 @@ void Laberinto::iniciar(const Punto& entrada){
             alternativas.pop();
             buscarAlternativas(currentSpot);
             visitados.push(currentSpot);
+            spots.insert(0,currentSpot);
             laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
         }
         else if (currentSpot.getCantAlternativas() == 0 && visitados.size() > 1){
@@ -221,6 +274,7 @@ void Laberinto::iniciar(const Punto& entrada){
                 currentSpot = visitados.top();
             }
             laberinto[currentSpot.getFil()][currentSpot.getCol()] = '-';
+            spots.insert(0,currentSpot);
         }
         else if (currentSpot.getCantAlternativas() > 1){
             currentSpot = alternativas.top();
@@ -230,40 +284,20 @@ void Laberinto::iniciar(const Punto& entrada){
             visitados.push(Punto());
             buscarAlternativas(currentSpot);
             visitados.push(currentSpot);
+            spots.insert(0,currentSpot);
             laberinto[currentSpot.getFil()][currentSpot.getCol()] = 'O';
         }
         print(currentSpot);
+        printSPots(spots);
         //flag = continuar();
     }
     laberinto.clear();
-    system("pause > nul");
+    printSPots(spots);
+    //gotoxy(11,17);
+    //cout << char(254)<< " Digite una tecla para volver al menu principal. " << char(254) << endl;
+    //system("pause > nul");
 }
-void Laberinto::gotoxy(int x,int y){
-    HANDLE hcon;
-    hcon = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD dwPos;
-    dwPos.X = x;
-    dwPos.Y= y;
-    SetConsoleCursorPosition(hcon,dwPos);
-}
-void Laberinto::cuadro(int x1, int y1, int ancho, int alto){
-    for(int i=x1; i < ancho + x1; i++){
-        gotoxy(i,y1); // arriba
-        cout<<char(205);
-        gotoxy(i, y1 + alto); // abajo
-        cout<<char(205);
-    }
-    for(int j=y1; j < alto + y1; j++){
-        gotoxy(x1+ancho,j); // Derecha
-        cout<<char(186);
-        gotoxy(x1, j); // Izquierda
-        cout<<char(186);
-    }
-    gotoxy(x1,y1); cout<<char(201);
-    gotoxy(x1, y1 + alto); cout << char(200);
-    gotoxy(x1 + ancho, y1); cout << char(187);
-    gotoxy(x1 + ancho, y1 + alto); cout << char(188);
 
-}
+
 
 #endif

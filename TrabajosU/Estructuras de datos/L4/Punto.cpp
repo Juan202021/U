@@ -19,7 +19,7 @@ void Punto::setCol(int col){ this->col = col; }
 int Punto::getCantAlternativas() const { return cantAlternativas; }
 void Punto::setCantAlternativas(int cantAlternativas) { this->cantAlternativas = cantAlternativas; }
 ostream& operator<<(ostream& out, const Punto& p){
-    out << "Punto(x: " << p.fil << ", y: " << p.col << ", cant: " << p.cantAlternativas << ")";
+    out << "P(" << p.fil+1 << "," << p.col+1 << ")";
     return out;
 }
 bool Punto::operator==(const Punto& p) const{

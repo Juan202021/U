@@ -22,6 +22,7 @@ public:
     bool cargar();
     void print(const Punto& currentSpot);
     void printPos(const Punto& currentSpot);
+    void printSPots(const List<Punto>& spots);
     bool esSalida(const Punto& currentSpot);
     bool posValida(int fila, int columna);
     bool noPosAnterior(int fila, int columna);
@@ -30,8 +31,7 @@ public:
     void iniciar(const Punto& salida);
     int getTamanioF();
     int getTamanioC();
-    void gotoxy(int x,int y);
-    void cuadro(int x1, int y1, int ancho, int alto);
+
 };
 
 
