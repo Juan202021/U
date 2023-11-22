@@ -10,7 +10,7 @@ Punto::Punto(int fil, int col, int cantAlternativas):fil(fil),col(col),cantAlter
 Punto::Punto(const Punto& p){
     fil = p.getFil();
     col = p.getCol();
-    cantAlternativas = p.cantAlternativas;
+    cantAlternativas = p.getCantAlternativas();
 }
 int Punto::getFil() const{ return fil; }
 void Punto::setFil(int fil){ this->fil = fil; }

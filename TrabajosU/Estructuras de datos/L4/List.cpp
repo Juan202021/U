@@ -7,6 +7,9 @@ template<typename T>
 List<T>:: List(): begin(nullptr), count(0){}
 
 template<typename T>
+List<T>:: List(Node<T>* begin, int count): begin(begin), count(count){}
+
+template<typename T>
 List<T>:: ~List()
 {
     Node<T>* del = begin;
@@ -19,8 +22,8 @@ List<T>:: ~List()
 }
 
 template <>
-List<int>::List(const List<int>& l) {
-    Node<int>* nodoACopiar = l.begin;
+List<int>::List(const List<int>& list) {
+    Node<int>* nodoACopiar = list.begin;
     this->count = 0;
     this->begin = nullptr;
     while (nodoACopiar) {
@@ -101,6 +104,7 @@ T& List<T>::get(int pos) const{
 // Verificar si la posición es válida (dentro del rango permitido)
     if(pos < 0 || pos>count-1){
         cout << "Error! The position is out of range." << endl;
+        system("pause");
         assert(false);
     }
 // Si la posición es 0, devolver el valor del primer elemento
@@ -142,6 +146,22 @@ void List<T>::printReverse() const {
     for (int i=count-1; i>=0; i--){
         cout << get(i) << " ";
     }
+}
+template<typename T>
+List<T>& List<T>::operator=(const List<T>& list){
+    if(this != &list){ //Comprueba que no se esté intentano igualar un objeto a sí mismo
+        this->begin = list.begin;
+        this->count = list.count;
+        auto nodoACopiar = list.begin;
+        this->count = 0;
+        this->begin = nullptr;
+        while (nodoACopiar) {
+            // Copia el elemento
+            this->insert(this->size(), nodoACopiar->data);
+            nodoACopiar = nodoACopiar->next;
+        }
+    }
+    return *this;
 }
 
 template class List<Punto>;

@@ -14,12 +14,16 @@ protected:
     List<T> list;
 public:
     Stack();
-    Stack(const Stack<T>& stack);
+    explicit Stack(List<T> list);
+    Stack(Stack<T>& stack);
+    ~Stack();
     void push(const T& value);
     void pop();
     T& top();
     int size();
     void print();
+    Stack<T>& operator=(const Stack<T>& stack);
+    void reverseContent();
 };
 
 

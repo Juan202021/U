@@ -1,28 +1,21 @@
 #include <iostream>
-#include <windows.h>
 #include "Interfaces.h"
 
 using namespace std;
 
 int main() {
-    HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-
+    HANDLE hConsole(GetStdHandle(STD_OUTPUT_HANDLE));
     // Crear una estructura para almacenar la información del cursor.
     CONSOLE_CURSOR_INFO consoleCursorInfo;
 
     // Obtener la información actual del cursor.
-    GetConsoleCursorInfo(hConsoleOutput, &consoleCursorInfo);
+    GetConsoleCursorInfo(hConsole, &consoleCursorInfo);
 
     // Ocultar el cursor.
     consoleCursorInfo.bVisible = false;
 
     // Establecer la nueva información del cursor.
-    SetConsoleCursorInfo(hConsoleOutput, &consoleCursorInfo);
-
-    /*HANDLE wHnd = GetStdHandle (STD_OUTPUT_HANDLE);
-    SMALL_RECT windowSize = {0, 0, 50, 15};
-    SetConsoleWindowInfo (wHnd, 1, &windowSize);*/
-
+    SetConsoleCursorInfo(hConsole, &consoleCursorInfo);
 
     HWND consoleWindow;
     consoleWindow = GetConsoleWindow();
@@ -31,7 +24,8 @@ int main() {
     system("title LABERINTO C++");
     system("mode con: cols=73 lines=22");
 
-    menu_principal();
+    Interfaces interfaz;
+    interfaz.menu_principal();
 
     return 0;
 }
