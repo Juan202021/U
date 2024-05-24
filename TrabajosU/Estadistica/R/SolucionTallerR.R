@@ -52,10 +52,11 @@ rownames(df) = c("Sistemas","Electronica","Biologia","Ambiental")
 View(df)
 
 # Punto 4
-# La funcion View() invocar un visor de datos de tipo hoja de cálculo en un objeto R
+# La funcion View() invoca un visor de datos de tipo hoja de cálculo en un objeto R
 # La funcion mean() es la función genérica para la media aritmética (recortada) de un conjunto de datos numericos.
 # La funcion sd() es la encargada de calcular la desviacion estandar de un conjunto de datos.
-# La funcion length() obtiene o establece la longitud de vectores (incluyendo listas) y factores, y de cualquier otro objeto R para el que se haya definido un método.
+# La funcion length() obtiene o establece la longitud de vectores (incluyendo listas) y factores, y de cualquier otro objeto R para el que se haya 
+#             definido un método.
 # La funcion rep() replica los elementos de un vector o lista.
 # La funcion paste() se utiliza para concatenar cadenas de texto.
 # La funcion str() se usa para mostrar la estructura de un objeto en R, proporcionando informacion sobre su clase y la estructura de sus componentes.
