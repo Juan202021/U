@@ -135,18 +135,15 @@ n_Tolima = d_Tolima$Área_cosechada
 shapiro.test(n_Huila) # No se distribuye normal
 shapiro.test(n_Tolima) # No se distribuye normal
 
-# Homocedasticidad
-var.test(n_Huila,n_Tolima)
+# Verificar supuesto de Homocedasticidad
+var.test(n_Huila,n_Tolima,conf.level = 0.94)
 
-# Juzgar la hipótesis
+# Juzgar la hipótesis e intervalo de confianza
 wilcox.test(n_Huila,n_Tolima, alternative = "t",parired=F,conf.level = 0.94,mu=0,conf.int = T,na.rm=T,exact = F)
 
-# Intervalo de confianza 
-# SE PUEDE ????
-
 # Se concluye que, con un nivel de confianza del 94%, existe evidencia estadistica 
-# la media del area cosechada 
-# de cacao en el Huila es igual a la media del area cosechada de cacao en el Tolima
+# para afirmar que la media del area cosechada de cacao en el Huila es igual a la 
+# media del area cosechada de cacao en el Tolima
 
 # Punto E) Realice un análisis para probar la hipótesis planteada en “una condición” en el
 # cuadro según el grupo que le corresponda, juzgue la hipótesis tenga en cuenta las 
@@ -157,26 +154,29 @@ wilcox.test(n_Huila,n_Tolima, alternative = "t",parired=F,conf.level = 0.94,mu=0
 # Ho: La media del área de cacao cosechada del Huila es menor o igual a 165
 # Ha: La media del área de cacao cosechada del Huila es mayor a 165
 
-# Ya se verifico el supuesto de normalidad y se encontro que no son normales
+# Ya se verifico el supuesto de normalidad y se encontro que no se distribuye normal
 
 # Juzgar la hipotesis
-wilcox.test(n_Huila, mu=165,alternative = "t",conf.int = T,exact = F )
+wilcox.test(n_Huila, mu=165,alternative = "g",conf.int = T,exact = F, conf.level = 0.94)
+
+# Intervalos de confianza
+wilcox.test(n_Huila, mu=165,alternative = "t",conf.int = T,exact = F, conf.level = 0.94)
 
 # Se concluye que con un nivel de significancia del 6%, la media del área cosechada 
 # del Huila es a lo sumo 165
 
 
-mean_Huila = Data %>% group_by(DEPARTAMENTO) %>% filter(CULTIVO=="CACAO", DEPARTAMENTO=="HUILA") %>%
-  summarise(
-    Área_cosechada = mean(`Área Cosechada(ha)`)
-    
-  )
-view(mean_Huila)
-
 # Punto F) Seleccione dos variables de acuerdo al producto asignado y establezca ecuación de 
 # regresión entre área cosechada y producción
 
-tbl_ac_vs_p = Data %>% filter(CULTIVO=="CACAO") %>% summarise(produccion = `Producción(t)`,area_cosechada = `Área Cosechada(ha)`)
+DatSinCeros <- read_excel("C:/Users/Juan/JAristizabal/U/TrabajosU/Estadistica/Datos Produc Agric.xlsx", 
+                                 sheet = "DatSinCero")
+View(DatSinCeros)
+
+DatSinC = DatSinCeros 
+attach(DatSinC)
+
+tbl_ac_vs_p = DatSinC %>% filter(CULTIVO=="CACAO") %>% summarise(produccion = `Producción(t)`,area_cosechada = `Área Cosechada(ha)`)
 view(tbl_ac_vs_p)
 
 produccion = tbl_ac_vs_p$produccion
@@ -211,19 +211,21 @@ bc = boxcox(d)
 (lambda =bc $ x [which.max (bc $ y)])
 #Transformar la variable con el lambda encontado =0.10101
 
-regresion_modif = lm(produccion^10~area_cosechada)
+regresion_modif = lm(produccion^0.005~area_cosechada)
 summary(regresion_modif)
+#install.packages("nortest")
+library(nortest)
+lillie.test(residuals(regresion_modif))
 
-shapiro.test(residuals(regresion_modif))
+hist(residuals(d))
+hist(residuals(regresion_modif))
 
 plot(produccion~area_cosechada)
 
 # Se concluye que las variables presentan una relacion lineal fuerte, dada por 
 # la expresion anterior, obtenida mediante un proceso de regresión significante 
+# en el que se encontro que cumple con los supuestos de normalidad y homocedasticidad 
 
-x = Data %>% filter(CULTIVO=="CACAO") %>% summarise(produccion = `Producción(t)`,area_cosechada = `Área Cosechada(ha)`, cultivo = CULTIVO)
-view(x)
-plot(x$produccion~x$area_cosechada)
+plot(tbl_ac_vs_p$produccion~tbl_ac_vs_p$area_cosechada, xlab="Área cosechada (ha)", ylab="Producción (t)")
 
-y = Data %>% filter(CULTIVO=="CACAO")
-view(y)
+
