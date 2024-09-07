@@ -17,19 +17,12 @@ attach(Data)
 # MD y MF) cada grupo tiene la posibilidad de plantear el análisis.
 
 tabTb = Data %>% group_by(Data$DEPARTAMENTO) %>% filter(CULTIVO=='CACAO',DEPARTAMENTO=='SANTANDER' | DEPARTAMENTO=='ANTIOQUIA' | DEPARTAMENTO=='ARAUCA' | DEPARTAMENTO=='HUILA' | DEPARTAMENTO=='CESAR' | DEPARTAMENTO=='TOLIMA' | DEPARTAMENTO=='NARIÑO') %>%
-  summarise(Media_A_Sembrada = mean(`Área Sembrada(ha)`,na.rm = T),
-            Mediana_A_Sembrada = median(`Área Sembrada(ha)`, na.rm = T),
-            Varianza_A_Sembrada = round(var(`Área Sembrada(ha)`,na.rm = T),5),
-            Covarianza_A_Sembrada = sd(`Área Sembrada(ha)`)/mean(`Área Sembrada(ha)`),
-            Media_Produccion = mean(`Producción(t)`,na.rm = T),
-            Mediana_Produccion = median(`Producción(t)`, na.rm = T),
-            Varianza_Produccion = round(var(`Producción(t)`,na.rm = T),5),
-            Covarianza_Produccion = sd(`Producción(t)`)/mean(`Producción(t)`),
-            Media_Rendimiento = mean(`Rendimiento(t/ha)`,na.rm = T),
-            Mediana_Rendimiento = median(`Rendimiento(t/ha)`, na.rm = T),
-            Varianza_Rendimiento = round(var(`Rendimiento(t/ha)`,na.rm = T),5),
-            Covarianza_Rendimiento = sd(`Rendimiento(t/ha)`/mean(`Rendimiento(t/ha)`))
-  )
+  summarise(Media_A_Sembrada = round(mean(`Área Sembrada(ha)`,na.rm = T),2),
+            Varianza_A_Sembrada = round(var(`Área Sembrada(ha)`,na.rm = T),2),
+            Coeficiente_de_variacion_A_Sembrada = round(sd(`Área Sembrada(ha)`)/mean(`Área Sembrada(ha)`),2),
+            Media_Produccion = round(mean(`Producción(t)`,na.rm = T),2),
+            Varianza_Produccion = round(var(`Producción(t)`,na.rm = T),2),
+            Coeficiente_de_variacion_Produccion = round(sd(`Producción(t)`)/mean(`Producción(t)`),2))
 view(tabTb)
 
 DataFiltrada = Data %>% group_by(Data$DEPARTAMENTO) %>% filter(CULTIVO=='CACAO',DEPARTAMENTO=='SANTANDER' | DEPARTAMENTO=='ANTIOQUIA' | DEPARTAMENTO=='ARAUCA' | DEPARTAMENTO=='HUILA' | DEPARTAMENTO=='CESAR' | DEPARTAMENTO=='TOLIMA' | DEPARTAMENTO=='NARIÑO')
@@ -39,7 +32,7 @@ plot(DataFiltrada$`Área Sembrada(ha)`,DataFiltrada$`Producción(t)`,ylab='Produ
 doc <- read_docx()
 # Agrega una tabla al documento
 doc <- doc %>%
-  body_add_table(tat)
+  body_add_table(tabTb)
 # Guardar el documento de Word
 print(doc, target = "tabla_editable.docx")
 
@@ -54,7 +47,7 @@ tabR = Data %>% group_by(DEPARTAMENTO) %>% filter(CULTIVO=='CACAO',DEPARTAMENTO=
   summarise(Media_rendimiento_cacao = round(mean(`Rendimiento(t/ha)`,na.rm = T),3),
             Mediana_rendimiento_cacao = median(`Rendimiento(t/ha)`,na.rm = T),
             Varianza_rendimiento_cacao = round(var(`Rendimiento(t/ha)`,na.rm = T),5),
-            Covarianza_rendimiento_cacao = sd(`Rendimiento(t/ha)`)/mean(`Rendimiento(t/ha)`) 
+            Coeficiente_variacion_rendimiento_cacao = sd(`Rendimiento(t/ha)`)/mean(`Rendimiento(t/ha)`) 
   ) 
 view(tabR)
 
@@ -176,56 +169,44 @@ View(DatSinCeros)
 DatSinC = DatSinCeros 
 attach(DatSinC)
 
-tbl_ac_vs_p = DatSinC %>% filter(CULTIVO=="CACAO") %>% summarise(produccion = `Producción(t)`,area_cosechada = `Área Cosechada(ha)`)
-view(tbl_ac_vs_p)
-
-produccion = tbl_ac_vs_p$produccion
-area_cosechada = tbl_ac_vs_p$area_cosechada
-
 # Regresion lineal
-d = lm(produccion~area_cosechada)
+d = lm(DatSinC$`Producción(t)`~DatSinC$`Área Cosechada(ha)`)
 summary(d)
 
-# Ecuacion y = 26.06 + 0.46x
-
+# Ecuacion y = 4.335 + 0.576x
 
 # Residuales
 residuals(d)
 # Revisar normalidad de los residuales con Shapiro
 shapiro.test(residuals(d))
-# Revisar normalidad de los residuales con Kolmogorov
-ks.test(residuals(d),"norm") # SE DEBE HACER CON ESTE POR SER UNA MUESTRA MAYOR A 50?
 
-# Normalidad en las variables
-ks.test(area_cosechada,produccion,exact = F)
-
-# Homocedasticidad en la regresion
+# Homocedasticidad de la regresion
 #install.packages("lmtest")
 library("lmtest")
 bptest(d)
 
-# Tranformar a normales
+# Arreglo de la regresion
 library(MASS)
 bc = boxcox(d)
 
 (lambda =bc $ x [which.max (bc $ y)])
-#Transformar la variable con el lambda encontado =0.10101
+#Transformar la variable con el lambda encontado
 
-regresion_modif = lm(produccion^0.005~area_cosechada)
-summary(regresion_modif)
-#install.packages("nortest")
-library(nortest)
-lillie.test(residuals(regresion_modif))
+# Correccion de la regresion
+regresion_arreglada = lm(DatSinC$`Producción(t)`^0.5~DatSinC$`Área Cosechada(ha)`)
+summary(regresion_arreglada)
 
-hist(residuals(d))
-hist(residuals(regresion_modif))
+# Nueva ecuacion: y = 4.276 + 0.029x
 
-plot(produccion~area_cosechada)
+shapiro.test(residuals(regresion_arreglada))
+bptest(regresion_arreglada)
+
+pt = Data %>% filter(CULTIVO=="CACAO",DEPARTAMENTO=="HUILA")
+plot(pt$`Área Cosechada(ha)`,pt$`Producción(t)`, xlab="Área cosechada (ha)", ylab="Producción (t)")
+plot(DatSinC$`Área Cosechada(ha)`,DatSinC$`Producción(t)`, xlab="Área cosechada (ha)", ylab="Producción (t)")
 
 # Se concluye que las variables presentan una relacion lineal fuerte, dada por 
 # la expresion anterior, obtenida mediante un proceso de regresión significante 
 # en el que se encontro que cumple con los supuestos de normalidad y homocedasticidad 
-
-plot(tbl_ac_vs_p$produccion~tbl_ac_vs_p$area_cosechada, xlab="Área cosechada (ha)", ylab="Producción (t)")
 
 
