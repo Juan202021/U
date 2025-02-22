@@ -34,7 +34,7 @@ class AproxSerieMclaurin:
             n -> Número de cífras significativas
         '''
         e_s = 0.5 * 10**(2-c)
-        print("e_a:",e_s)
+        print("e_s:",e_s)
         return (0.5 * 10**(2-c))
 
     def cumpleCondicion(self, e_a: float, e_s: float):
@@ -109,15 +109,16 @@ class AproxSerieMclaurin:
                     # print(f'Derivada {n}: ', derivada, "Sust: ", derivada_evaluada)
                     anterior = res # Guarda la aproximacion anterior
                     res += ((derivada_evaluada * x_value**n) / sp.factorial(n) ) # Almacena el valor de la aproximacion
-                    all_Res.append(res) # Almacena todas las aproximaciones
-                    all_e_t.append(self.e_t(real,res)) # Almacena todos los errores verdaderos
+                    if res != anterior:
+                        all_Res.append(res) # Almacena todas las aproximaciones
+                        all_e_t.append(self.e_t(real,res)) # Almacena todos los errores verdaderos
 
-                    f_polinomio = ( x**n / sp.factorial(n) )
-                    f_serie_Mclaurin += (derivada_evaluada * f_polinomio) # Almacena la serie de Mclaurin
-                    
-                    if n >= 1: # Esto se hace porque para la primera aproximacion no se le puede calcular un error normalizado
-                        primer_aprox = False
-                        all_e_a.append(self.e_a(res,anterior))
+                        f_polinomio = ( x**n / sp.factorial(n) )
+                        f_serie_Mclaurin += (derivada_evaluada * f_polinomio) # Almacena la serie de Mclaurin
+                        
+                        if n >= 1: # Esto se hace porque para la primera aproximacion no se le puede calcular un error normalizado
+                            primer_aprox = False
+                            all_e_a.append(self.e_a(res,anterior))
 
                     n += 1
                 # print(all_Res)
@@ -125,7 +126,7 @@ class AproxSerieMclaurin:
                 aprox_s_m = f_serie_Mclaurin.subs(x,x_value)
                 print("Aproximación:", aprox_s_m)
                 print("Serie McLaurin:", f_serie_Mclaurin)
-                return n, all_Res, all_e_t, all_e_a, f_serie_Mclaurin, aprox_s_m
+                return len(all_Res), all_Res, all_e_t, all_e_a, f_serie_Mclaurin, aprox_s_m
             else: 
                 print("Faltan datos en serieMacLaurin()")
         except Exception as e:

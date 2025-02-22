@@ -130,14 +130,15 @@ class App:
                                 if e == 0:
                                     with dpg.table_row():
                                         dpg.add_text(str(e+1))
-                                        dpg.add_text(str(res[e]))
+                                        dpg.add_text(str(res[e])) if e < (t - 1) else dpg.add_text(str(res[e]), color=(77, 255, 77, 255))
                                         dpg.add_text(str(err_t[e]))
                                 else: 
                                     with dpg.table_row():
                                         dpg.add_text(str(e+1))
-                                        dpg.add_text(str(res[e]))
+                                        dpg.add_text(str(res[e])) if e < (t - 1) else dpg.add_text(str(res[e]), color=(77, 255, 77, 255))
                                         dpg.add_text(str(err_t[e]))
                                         dpg.add_text(str(err_a[e-1]))
+                        dpg.add_text(f"E_s:  {self.s_m.e_s(c)}", parent="contenedor_tabla", indent=(self.mainWindow_width - 400), color=(152, 255, 152, 255))
 
                 else:
                     self.tableCreated = True
@@ -163,14 +164,16 @@ class App:
                                 if e == 0:
                                     with dpg.table_row():
                                         dpg.add_text(str(e+1))
-                                        dpg.add_text(str(res[e]))
+                                        dpg.add_text(str(res[e])) if e < (t - 1) else dpg.add_text(str(res[e]), color=(77, 255, 77, 255))
                                         dpg.add_text(str(err_t[e]))
                                 else: 
                                     with dpg.table_row():
                                         dpg.add_text(str(e+1))
-                                        dpg.add_text(str(res[e]))
+                                        dpg.add_text(str(res[e])) if e < (t - 1) else dpg.add_text(str(res[e]), color=(77, 255, 77, 255))
                                         dpg.add_text(str(err_t[e]))
                                         dpg.add_text(str(err_a[e-1]))
+                        dpg.add_text(f"E_s:  {self.s_m.e_s(c)}", indent=(self.mainWindow_width - 400), color=(135, 206, 235, 255))
+
                 return f_s_m, a_s_m
             else:
                 print("No hay parámetros suficientes para mostrar la tabla en ( mostrar_aprox() ) ")
